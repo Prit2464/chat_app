@@ -1,0 +1,10 @@
+# Node.js dependencies
+# This is typically the 'node_modules' directory in the root of your project
+# and in any subdirectories (like 'frontend' and 'backend').
+node_modules
+
+# Environment variables
+# Store your sensitive API keys and configuration in these files.
+.env
+
+
