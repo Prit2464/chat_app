@@ -10,4 +10,6 @@ export const genrateToken = (userID, res) => {
         secureSite : "strict",
         secure: process.env.NODE_ENV === "development" ? false : true
     })
+
+    return token
 }
