@@ -29,6 +29,7 @@ export const signup = async (req, res) => {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
+        // create the new user with user model
         const newUser = new User({
             email,
             fullName,
@@ -36,15 +37,21 @@ export const signup = async (req, res) => {
         })
 
         if (newUser) {
-            genrateToken(newUser._id, res)
-            await newUser.save()
+            // save the created user into database
+            const savedUser = await newUser.save()
 
+            // generate token and send it back to client
+            genrateToken(newUser._id, res)
+
+
+            // send the user deatils
             res.status(201).json({
                 _id: newUser._id,
                 email: newUser.email,
                 fullName: newUser.fullName,
                 profilePic: newUser.profilePic
             })
+            // todo send welcom email
 
         } else {
 
