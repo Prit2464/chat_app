@@ -60,8 +60,30 @@ export const signup = async (req, res) => {
 
 
 export const login = async (req, res) => {
-    res.send("login endpoint")
+    const { email, password } = req.body
+    try {
+        const user = await User.findOne({ email })
+
+        if (!user) return res.status(400).json({ message: "Invalid credentilas" })
+        console.log(user.password)
+        const isPasswordCorrect = await bcrypt.compare(password, user.password)
+        if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentilas" })
+
+        genrateToken(user._id, res)
+        res.status(201).json({
+            _id: user._id,
+            email: user.email,
+            fullName: user.fullName,
+            profilePic: user.profilePic
+        })
+
+    } catch (error) {
+        console.error("Error in login Controller", error)
+        return res.status(500).json({ message: "Internal server  error" })
+    }
+
 }
-export const logout = async (req, res) => {
-    res.send("logout endpoint")
+export const logout = (req, res) => {
+    res.cookie("jwt", "", { maxAge: 0 })
+    res.status(200).json({ message: "Logout successfully" })
 }
