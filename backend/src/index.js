@@ -11,8 +11,8 @@ const app = express()
 
 const PORT = process.env.PORT || 3000
 
-app.use(express.json()) // req body
-app.use(cookieParser())
+app.use(express.json({ limit: "5mb" })) // req body
+app.use(cookieParser()) // cookies 
 
 app.use("/api/auth", authRoute)
 
