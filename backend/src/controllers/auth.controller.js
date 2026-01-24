@@ -35,11 +35,10 @@ export const signup = async (req, res) => {
             fullName,
             password: hashedPassword,
         })
-
+        // save the user in database and create a token with generate token method and send status 201 and user data 
         if (newUser) {
-            genrateToken(newUser._id, res)
             await newUser.save()
-
+            genrateToken(newUser._id, res)
             res.status(201).json({
                 _id: newUser._id,
                 email: newUser.email,
@@ -58,8 +57,6 @@ export const signup = async (req, res) => {
 
 }
 
-
-
 export const login = async (req, res) => {
     const { email, password } = req.body
 
@@ -68,7 +65,7 @@ export const login = async (req, res) => {
         const user = await User.findOne({ email })
 
         if (!user) return res.status(400).json({ message: "Invalid credentilas" })
-        console.log(user.password)
+
         const isPasswordCorrect = await bcrypt.compare(password, user.password)
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentilas" })
 
@@ -86,6 +83,7 @@ export const login = async (req, res) => {
     }
 
 }
+
 export const logout = (req, res) => {
     res.cookie("jwt", "", { maxAge: 0 })
     res.status(200).json({ message: "Logout successfully" })
