@@ -19,7 +19,11 @@ const userSchema = new mongoose.Schema({
     profilePic: {
         type: String,
         default: ""
-    }
+    },
+
+    // List of friends (User IDs) for quick access when creating groups
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+
 }, { timestamps: true })
 
 const User = mongoose.model("User", userSchema)
