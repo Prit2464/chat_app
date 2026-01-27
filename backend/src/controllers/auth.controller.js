@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import claudinary from "../lib/claudinary.js"
 
 export const signup = async (req, res) => {
+    
     const { email, fullName, password } = req.body
     try {
         //  check all fields are provided
